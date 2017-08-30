@@ -6,6 +6,7 @@ const app = express();
 
 const echoMessage = require('./messageTypes/echo');
 const genericMessage = require('./messageTypes/generic');
+const buttonMessage = require('./messageTypes/button');
 const messageBuilder = require('./util/messageBuilder');
 
 const sendMessage = messageBuilder(process.env.VERIFY_TOKEN);
@@ -32,17 +33,19 @@ app.get('/webhook/', function (req, res) {
 });
 
 app.post('/webhook/', function (req, res) {
-    let messaging_events = req.body.entry[0].messaging;
+    let messaging_events = req.body.entry[0] && req.body.entry[0].messaging;
     console.log('[POST /webhook], ', JSON.stringify(messaging_events, null, 2));
-    for (let i = 0; i < messaging_events.length; i++) {
-	    let event = req.body.entry[0].messaging[i];
-	    let sender = event.sender.id;
-	    if (event.message && event.message.text) {
-		    let text = event.message.text;
-		    sendMessage(sender, genericMessage);
-	    }
+    if(messaging_events){
+        for (let i = 0; i < messaging_events.length; i++) {
+    	    let event = req.body.entry[0].messaging[i];
+    	    let sender = event.sender.id;
+    	    if (event.message && event.message.text) {
+    		    let text = event.message.text;
+    		    sendMessage(sender, buttonMessage);
+    	    }
+        }
     }
-    res.sendStatus(200)
+    res.sendStatus(200);
 });
 
 // Spin up the server

@@ -14,7 +14,7 @@ const genericMessage = {
                 }, {
                     "type": "postback",
                     "title": "Postback",
-                    "payload": "Payload for first element in a generic bubble",
+                    "payload": "Payload for first element in a generic bubble"
                 }],
             }, {
                 "title": "Second card",
@@ -23,7 +23,7 @@ const genericMessage = {
                 "buttons": [{
                     "type": "postback",
                     "title": "Postback",
-                    "payload": "Payload for second element in a generic bubble",
+                    "payload": "Payload for second element in a generic bubble"
                 }],
             }]
         }
