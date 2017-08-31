@@ -33,17 +33,16 @@ app.get('/webhook/', function (req, res) {
 });
 
 app.post('/webhook/', function (req, res) {
-    let messaging_events = req.body.entry[0] && req.body.entry[0].messaging;
-    console.log('[POST /webhook], ', JSON.stringify(messaging_events, null, 2));
-    if(messaging_events){
-        for (let i = 0; i < messaging_events.length; i++) {
-    	    let event = req.body.entry[0].messaging[i];
-    	    let sender = event.sender.id;
-    	    if (event.message && event.message.text) {
-    		    let text = event.message.text;
-    		    sendMessage(sender, buttonMessage);
-    	    }
-        }
+    console.log('-----------------');
+    console.log('[POST /webhook] \n', JSON.stringify(req.body.entry[0], null, 2));
+    console.log('-----------------');
+    if(req.body.entry[0] && req.body.entry[0].messaging){
+        req.body.entry[0].messaging.forEach((event) => {
+            if (event.message && event.message.text && event.message.is_echo) {
+                let text = event.message.text;
+                sendMessage(sender, buttonMessage);
+            }
+        });
     }
     res.sendStatus(200);
 });
